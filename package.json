@@ -1,0 +1,28 @@
+{
+  "name": "nitro-openapi-schemas",
+  "version": "0.0.1",
+  "description": "Schema-driven OpenAPI for Nitro — Standard Schema validators on h3 handlers become your /_openapi.json. Prototype for nitrojs/nitro#2974 / #3542.",
+  "license": "MIT",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "workspaces": [
+    "examples/*"
+  ],
+  "scripts": {
+    "dev": "bun run --cwd examples/nitro dev",
+    "openapi": "bun run --cwd examples/nitro openapi",
+    "sdk": "bun run --cwd examples/nitro sdk"
+  },
+  "peerDependencies": {
+    "h3": "^2.0.1-rc.22",
+    "nitro": "^3.0.260610-beta"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "jiti": "^2.7.0"
+  }
+}
