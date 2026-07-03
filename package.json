@@ -19,7 +19,15 @@
   },
   "peerDependencies": {
     "h3": "^2.0.1-rc.22",
-    "nitro": "^3.0.260610-beta"
+    "nitro": "^3.0.260610-beta",
+    "zod": "^4.2.0",
+    "arktype": "^2.1.28",
+    "@valibot/to-json-schema": "^1.5.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": { "optional": true },
+    "arktype": { "optional": true },
+    "@valibot/to-json-schema": { "optional": true }
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
