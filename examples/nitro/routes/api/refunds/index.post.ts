@@ -1,4 +1,4 @@
-import { defineValidatedHandler } from "h3";
+import { defineValidatedHandler } from "nitro/h3";
 import { z } from "zod";
 import { refundSchema } from "../../../shared/schema.ts";
 
