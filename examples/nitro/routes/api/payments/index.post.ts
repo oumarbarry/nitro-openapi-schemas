@@ -1,4 +1,4 @@
-import { defineValidatedHandler } from "h3";
+import { defineValidatedHandler } from "nitro/h3";
 import { createPaymentSchema, paymentSchema } from "../../../shared/schema.ts";
 
 export default defineValidatedHandler({

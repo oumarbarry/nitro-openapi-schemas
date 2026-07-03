@@ -1,4 +1,4 @@
-import { defineHandler } from "h3";
+import { defineHandler } from "nitro/h3";
 import { paymentSchema } from "../../../shared/schema.ts";
 
 // Plain defineHandler + meta also works — schemas in meta.openAPI.responses
