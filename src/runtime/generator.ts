@@ -135,6 +135,23 @@ class SchemaRegistry {
   }
 }
 
+// Per-vendor naming convention for hoisting into components/schemas.
+// zod's `.meta()` is a getter/setter function; arktype's `.meta` (set via
+// `.configure({ id })`) is a plain property — calling it like zod's throws.
+function schemaId(schema: StandardSchema, vendor: string): string | undefined {
+  switch (vendor) {
+    case "zod": {
+      return (schema as any).meta?.()?.id as string | undefined;
+    }
+    case "arktype": {
+      return (schema as any).meta?.id as string | undefined;
+    }
+    default: {
+      return undefined;
+    }
+  }
+}
+
 function rewriteDefsRefs(node: any): any {
   if (Array.isArray(node)) {
     for (const item of node) rewriteDefsRefs(item);
@@ -151,20 +168,36 @@ async function convert(
   schema: StandardSchema,
   io: "input" | "output"
 ): Promise<{ json: any; name?: string }> {
-  const vendor = schema["~standard"].vendor;
+  const std = schema["~standard"] as any;
+
+  // StandardJSONSchema (spec v1.1, standard-schema/standard-schema#134):
+  // schemas expose ~standard.jsonSchema.{input,output} directly — no vendor
+  // dispatch needed. Zod 4.2+ and ArkType 2.1.28+ implement it natively.
+  if (std.jsonSchema) {
+    const json = std.jsonSchema[io]({ target: "draft-2020-12" });
+    delete json.$schema;
+    return { json, name: schemaId(schema, std.vendor) };
+  }
+
+  // Fallback: wrap into a spec-compliant value for libraries whose raw
+  // schema doesn't implement StandardJSONSchema directly, then recurse
+  // through the same code path above.
+  const vendor = std.vendor;
   switch (vendor) {
-    case "zod": {
-      const { z } = await import("zod");
-      const json = z.toJSONSchema(schema as any, { io, target: "draft-2020-12" });
-      delete json.$schema;
-      const name = (schema as any).meta?.()?.id as string | undefined;
-      return { json, name };
-    }
     case "valibot": {
       // optional dependency — only needed if the app uses valibot
       // (specifier split so the bundler doesn't try to resolve it)
-      const { toJsonSchema } = await import("@valibot/" + "to-json-schema");
-      return { json: toJsonSchema(schema) };
+      // @valibot/to-json-schema@1.5+ ships toStandardJsonSchema(), a
+      // spec-compliant wrapper (the plain toJsonSchema() export predates it
+      // and doesn't implement the spec). The wrapper strips the schema down
+      // to just `~standard`, so v.metadata({ id }) must be read from the
+      // raw schema's pipe *before* wrapping — it isn't recoverable after.
+      const { toStandardJsonSchema } = await import("@valibot/" + "to-json-schema");
+      const name = (schema as any).pipe?.find((a: any) => a.kind === "metadata")?.metadata?.id as
+        | string
+        | undefined;
+      const { json } = await convert(toStandardJsonSchema(schema) as StandardSchema, io);
+      return { json, name };
     }
     case "arktype": {
       return { json: (schema as any).toJsonSchema() };
