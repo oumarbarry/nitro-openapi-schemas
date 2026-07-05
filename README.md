@@ -31,7 +31,7 @@ export default defineConfig({
 
 ```ts
 // routes/api/payments/index.post.ts
-import { defineValidatedHandler } from "h3";
+import { defineValidatedHandler } from "nitro/h3";
 import { createPaymentSchema, paymentSchema } from "../../shared/schema.ts";
 
 export default defineValidatedHandler({
@@ -79,6 +79,6 @@ curl -X POST localhost:3000/api/payments -H 'content-type: application/json' \
 
 1. **No build-time magic is required** for schema-driven OpenAPI — the schemas are already in the bundle (they validate requests). The missing piece in Nitro core is only: give the OpenAPI route access to handler objects instead of the statically-extracted `handlersMeta`.
 2. **Response schemas** ride in `meta.openAPI.responses[].schema` here because h3's `validate` has no `response` field yet — that's the small h3 PR this RFC proposes.
-3. **The known trade-off is visible**: Rolldown warns `INEFFECTIVE_DYNAMIC_IMPORT` for demo routes — direct imports defeat lazy loading for routes referenced by the spec route. In core this would be scoped to the OpenAPI chunk (dev-default / opt-in in prod), or avoided entirely in production via the artifact path.
+3. **The known trade-off is visible**: the virtual module's direct imports defeat lazy loading for routes referenced by the spec route. In core this would be scoped to the OpenAPI chunk (dev-default / opt-in in prod), or avoided entirely in production via the artifact path.
 
 Not handled (prototype scope): cookie params, non-JSON content types, `validate.headers` name casing, multiple methods per file, spec cache invalidation in dev (restart dev after schema changes if the route module was already loaded), npm publishing (`exports` points at `src/*.ts` — add unbuild when publishing for real).

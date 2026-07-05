@@ -1,7 +1,8 @@
 /**
  * Runtime OpenAPI generator — reads live Standard Schema objects off h3
  * handlers (attached by defineValidatedHandler / defineHandler) and converts
- * them to JSON Schema via per-vendor dispatch.
+ * them to JSON Schema via Standard JSON Schema (~standard.jsonSchema), with a
+ * per-vendor fallback for libraries that don't implement it directly.
  *
  * Runtime-agnostic: no Node APIs.
  */
@@ -94,9 +95,10 @@ function isStandardSchema(value: unknown): value is StandardSchema {
 }
 
 /**
- * Converts schemas and hoists *named* ones (e.g. zod `.meta({ id })`) into
- * components/schemas, referenced by identity — so `paymentSchema` used across
- * several routes is emitted once as `#/components/schemas/Payment`.
+ * Converts schemas and hoists *named* ones (per each vendor's own naming
+ * convention — see schemaId()) into components/schemas, referenced by
+ * identity — so `paymentSchema` used across several routes is emitted once
+ * as `#/components/schemas/Payment`.
  */
 class SchemaRegistry {
   components: Record<string, any> = {};
