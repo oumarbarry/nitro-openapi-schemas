@@ -25,7 +25,7 @@ try {
   await writeFile("openapi.json", JSON.stringify(spec, null, 2) + "\n");
   console.log(
     `✔ openapi.json written — ${Object.keys(spec.paths).length} paths, ` +
-      `${Object.keys(spec.components?.schemas || {}).length} component schemas`
+      `${Object.keys(spec.components?.schemas || {}).length} component schemas`,
   );
 } finally {
   child.kill();

@@ -17,7 +17,7 @@ export default defineValidatedHandler({
       operationId: "listPayments",
     },
   },
-  handler: (event) => {
+  handler: (_event) => {
     return { data: [], cursor: null };
   },
 });

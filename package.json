@@ -1,36 +1,50 @@
 {
   "name": "nitro-openapi-schemas",
   "version": "0.0.1",
+  "private": true,
   "description": "Schema-driven OpenAPI for Nitro — Standard Schema validators on h3 handlers become your /_openapi.json. Prototype for nitrojs/nitro#2974 / #3542.",
   "license": "MIT",
-  "private": true,
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": "./src/index.ts"
-  },
   "workspaces": [
     "examples/*"
   ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "dev": "bun run --cwd examples/nitro dev",
     "openapi": "bun run --cwd examples/nitro openapi",
-    "sdk": "bun run --cwd examples/nitro sdk"
-  },
-  "peerDependencies": {
-    "h3": "^2.0.1-rc.22",
-    "nitro": "^3.0.260610-beta",
-    "zod": "^4.2.0",
-    "arktype": "^2.1.28",
-    "@valibot/to-json-schema": "^1.5.0"
-  },
-  "peerDependenciesMeta": {
-    "zod": { "optional": true },
-    "arktype": { "optional": true },
-    "@valibot/to-json-schema": { "optional": true }
+    "sdk": "bun run --cwd examples/nitro sdk",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "check": "oxlint && oxfmt --check",
+    "fix": "oxlint --fix && oxfmt"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
-    "jiti": "^2.7.0"
+    "jiti": "^2.7.0",
+    "oxfmt": "^0.57.0",
+    "oxlint": "^1.72.0"
+  },
+  "peerDependencies": {
+    "@valibot/to-json-schema": "^1.5.0",
+    "arktype": "^2.1.28",
+    "h3": "^2.0.1-rc.22",
+    "nitro": "^3.0.260610-beta",
+    "zod": "^4.2.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    },
+    "arktype": {
+      "optional": true
+    },
+    "@valibot/to-json-schema": {
+      "optional": true
+    }
   }
 }

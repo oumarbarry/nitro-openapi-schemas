@@ -43,7 +43,7 @@ export default {
             h.route &&
             h.route !== specRoute &&
             !h.route.startsWith("/_") &&
-            typeof h.handler === "string"
+            typeof h.handler === "string",
         );
       const files = [...new Set(entries.map((h) => h.handler as string))];
       return [
@@ -53,8 +53,8 @@ export default {
         ...entries.map(
           (h) =>
             `  { route: ${JSON.stringify(h.route)}, method: ${JSON.stringify(
-              (h.method || "get").toLowerCase()
-            )}, handler: h${files.indexOf(h.handler as string)} },`
+              (h.method || "get").toLowerCase(),
+            )}, handler: h${files.indexOf(h.handler as string)} },`,
         ),
         "];",
       ].join("\n");

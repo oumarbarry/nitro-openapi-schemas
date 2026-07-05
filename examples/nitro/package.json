@@ -1,17 +1,17 @@
 {
   "name": "nitro-openapi-example",
-  "dependencies": {
-    "h3": "^2.0.1-rc.22",
-    "nitro": "^3.0.260610-beta",
-    "nitro-openapi-schemas": "file:../..",
-    "zod": "^4.0.0"
-  },
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "nitro dev",
     "build": "nitro build",
     "openapi": "nitro build && node scripts/emit-openapi.mjs",
     "sdk": "npx -y openapi-typescript openapi.json -o sdk.d.ts"
   },
-  "type": "module"
+  "dependencies": {
+    "h3": "^2.0.1-rc.22",
+    "nitro": "^3.0.260610-beta",
+    "nitro-openapi-schemas": "file:../..",
+    "zod": "^4.0.0"
+  }
 }

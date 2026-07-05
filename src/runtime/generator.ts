@@ -29,7 +29,7 @@ export interface GenerateOptions {
 
 export async function toOpenAPIDocument(
   entries: RouteEntry[],
-  opts: GenerateOptions = {}
+  opts: GenerateOptions = {},
 ): Promise<Record<string, any>> {
   const registry = new SchemaRegistry();
   const paths: Record<string, any> = {};
@@ -168,7 +168,7 @@ function rewriteDefsRefs(node: any): any {
 
 async function convert(
   schema: StandardSchema,
-  io: "input" | "output"
+  io: "input" | "output",
 ): Promise<{ json: any; name?: string }> {
   const std = schema["~standard"] as any;
 
@@ -206,7 +206,7 @@ async function convert(
     }
     default: {
       throw new Error(
-        `[openapi] No JSON Schema converter for schema vendor "${vendor}". Supported: zod, valibot, arktype.`
+        `[openapi] No JSON Schema converter for schema vendor "${vendor}". Supported: zod, valibot, arktype.`,
       );
     }
   }
@@ -215,12 +215,10 @@ async function convert(
 async function schemaToParameters(
   registry: SchemaRegistry,
   schema: StandardSchema,
-  location: "query" | "header"
+  location: "query" | "header",
 ): Promise<any[]> {
   const json = await registry.toJsonSchema(schema, "input");
-  const resolved = json.$ref
-    ? registry.components[json.$ref.split("/").pop()!]
-    : json;
+  const resolved = json.$ref ? registry.components[json.$ref.split("/").pop()!] : json;
   if (resolved?.type !== "object" || !resolved.properties) return [];
   return Object.entries<any>(resolved.properties).map(([name, propSchema]) => ({
     name,
