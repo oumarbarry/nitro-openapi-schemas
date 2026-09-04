@@ -46,6 +46,7 @@ to Nitro v2 are merged into `nitro-v2` afterwards.
 ## Releases
 
 Two lines, one package. `main` publishes 3.x under the `latest` dist-tag
-(Nitro v3), `nitro-v2` publishes 2.x under `v2` (Nitro v2 and Nuxt 4). Bump
-with `npm version` on the branch, publish with `npm publish` (add `--tag v2`
-on `nitro-v2`), then push the branch with `--follow-tags`.
+(Nitro v3), the `nitro-v2` branch publishes 2.x under the `nitro-v2` dist-tag
+(Nitro v2 and Nuxt 4; `v2` is not usable, npm reads it as a semver range). Bump
+with `npm version` on the branch, publish with `npm publish` (add
+`--tag nitro-v2` on `nitro-v2`), then push the branch with `--follow-tags`.
