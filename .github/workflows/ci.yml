@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main, nitro-v2]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      # bun copies the root package into the examples before `prepare` builds dist/,
+      # so the second install is what gives the examples the built package
+      - run: bun install --force
+      - run: bun run check
+      - run: bun run build
+      - run: bunx publint
+      - run: bun run openapi

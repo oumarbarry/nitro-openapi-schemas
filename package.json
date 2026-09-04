@@ -1,0 +1,82 @@
+{
+  "name": "nitro-openapi-schemas",
+  "version": "3.0.0",
+  "description": "Schema-driven OpenAPI for Nitro: the Zod, Valibot or ArkType schema that validates a route also documents it",
+  "keywords": [
+    "api",
+    "arktype",
+    "h3",
+    "json-schema",
+    "nitro",
+    "nuxt",
+    "openapi",
+    "standard-schema",
+    "swagger",
+    "valibot",
+    "zod"
+  ],
+  "homepage": "https://github.com/oumarbarry/nitro-openapi-schemas#readme",
+  "bugs": "https://github.com/oumarbarry/nitro-openapi-schemas/issues",
+  "license": "MIT",
+  "author": "Oumar Barry",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oumarbarry/nitro-openapi-schemas.git"
+  },
+  "workspaces": [
+    "examples/*"
+  ],
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "bun run --cwd examples/nitro dev",
+    "openapi": "bun run --cwd examples/nitro openapi",
+    "sdk": "bun run --cwd examples/nitro sdk",
+    "build": "obuild",
+    "prepare": "obuild",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "check": "oxlint && oxfmt --check",
+    "fix": "oxlint --fix && oxfmt"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "jiti": "^2.7.0",
+    "obuild": "^0.4.37",
+    "oxfmt": "^0.57.0",
+    "oxlint": "^1.72.0",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "@valibot/to-json-schema": "^1.5.0",
+    "arktype": "^2.1.28",
+    "h3": "^2.0.1-rc.22",
+    "nitro": "^3.0.260610-beta",
+    "zod": "^4.2.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    },
+    "arktype": {
+      "optional": true
+    },
+    "@valibot/to-json-schema": {
+      "optional": true
+    }
+  }
+}
