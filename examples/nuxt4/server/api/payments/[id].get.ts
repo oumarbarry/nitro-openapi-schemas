@@ -1,8 +1,6 @@
 import { defineValidatedHandler } from "nitro-openapi-schemas/h3";
-import { paymentSchema } from "../../../shared/schema.ts";
 
-// meta-only usage (no validate) works too, schemas in meta.openAPI.responses
-// are converted as well. Path params are documented automatically.
+// meta-only usage, path params are documented automatically.
 export default defineValidatedHandler({
   meta: {
     openAPI: {
@@ -10,7 +8,7 @@ export default defineValidatedHandler({
       summary: "Get a payment",
       operationId: "getPayment",
       responses: {
-        200: { description: "The payment", schema: paymentSchema },
+        200: { description: "The payment" },
         404: { description: "Not found" },
       },
     },

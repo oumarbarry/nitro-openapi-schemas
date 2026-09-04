@@ -1,7 +1,7 @@
 # nitro-openapi-schemas
 
-[![CI](https://github.com/oumarbarry/nitro-openapi-schemas/actions/workflows/ci.yml/badge.svg)](https://github.com/oumarbarry/nitro-openapi-schemas/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/nitro-openapi-schemas?color=yellow)](https://npmjs.com/package/nitro-openapi-schemas)
+[![CI](https://github.com/oumarbarry/nitro-openapi-schemas/actions/workflows/ci.yml/badge.svg?branch=nitro-v2)](https://github.com/oumarbarry/nitro-openapi-schemas/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/nitro-openapi-schemas/v2?color=yellow)](https://npmjs.com/package/nitro-openapi-schemas/v/v2)
 [![license](https://img.shields.io/npm/l/nitro-openapi-schemas?color=yellow)](https://github.com/oumarbarry/nitro-openapi-schemas/blob/main/LICENSE)
 
 Schema-driven OpenAPI for [Nitro](https://nitro.build). The Zod, Valibot or
@@ -17,8 +17,9 @@ Zod / Valibot / ArkType schema
   → openapi.json             written after `nitro build`, ready for SDK codegen
 ```
 
-- Nitro v3 and h3 v2, published as 3.x under the `latest` tag. Nitro v2 and
-  Nuxt 4 have their own line, see [below](#nitro-v2-and-nuxt-4).
+- This is the Nitro v2 and Nuxt 4 line: `nitropack` 2.x and h3 1.x, published
+  as 2.x under the `v2` dist-tag from the `nitro-v2` branch. Nitro v3 users
+  want the [`main` branch](https://github.com/oumarbarry/nitro-openapi-schemas/tree/main) and the `latest` tag.
 - Zod 4.2+, ArkType 2.1.28+, and Valibot through `@valibot/to-json-schema`
   1.5+, via [Standard JSON Schema](https://github.com/standard-schema/standard-schema/pull/134).
   Bring the one you use; none is installed for you.
@@ -28,7 +29,7 @@ Zod / Valibot / ArkType schema
 ## Install
 
 ```sh
-bun add nitro-openapi-schemas   # or npm, pnpm
+bun add nitro-openapi-schemas@v2   # or npm, pnpm
 ```
 
 ## Usage
@@ -37,10 +38,10 @@ Register the module and, optionally, the `info` block of the spec:
 
 ```ts
 // nitro.config.ts
-import { defineConfig } from "nitro";
+import { defineNitroConfig } from "nitropack/config";
 import openAPISchemas from "nitro-openapi-schemas";
 
-export default defineConfig({
+export default defineNitroConfig({
   modules: [openAPISchemas],
   openAPISchemas: {
     info: { title: "Payments API", version: "1.0.0" },
@@ -50,14 +51,28 @@ export default defineConfig({
 });
 ```
 
-Then write routes with `defineValidatedHandler` from `nitro/h3`. The `body`,
-`query` and `headers` schemas are validated by h3 and documented by this
-module. `meta.openAPI` is merged into the operation, and a `schema` on a
-response is converted too:
+```ts
+// nuxt.config.ts (Nuxt 4): same options, nested under `nitro`
+import openAPISchemas from "nitro-openapi-schemas";
+
+export default defineNuxtConfig({
+  nitro: {
+    modules: [openAPISchemas],
+    openAPISchemas: { info: { title: "Payments API", version: "1.0.0" } },
+  },
+});
+```
+
+Then write routes with `defineValidatedHandler` from `nitro-openapi-schemas/h3`.
+It validates `query`, `headers` and `body` through each schema's own
+`~standard.validate` (400 with the issues in `data` on failure, body skipped
+for GET and HEAD) and documents them. `meta.openAPI` is merged into the
+operation, and a `schema` on a response is converted too:
 
 ```ts
-// routes/api/payments/index.post.ts
-import { defineValidatedHandler } from "nitro/h3";
+// routes/api/payments/index.post.ts (Nuxt: server/api/payments/index.post.ts)
+import { readBody } from "h3";
+import { defineValidatedHandler } from "nitro-openapi-schemas/h3";
 import { createPaymentSchema, paymentSchema } from "../../shared/schema.ts";
 
 export default defineValidatedHandler({
@@ -70,15 +85,17 @@ export default defineValidatedHandler({
     },
   },
   handler: async (event) => {
-    const body = await event.req.json(); // already validated
+    const body = await readBody(event); // already validated
     // ...
   },
 });
 ```
 
-Start the server and open `/_scalar`, or fetch `/_openapi.json`. Path
-parameters are documented from the route pattern, so a plain `defineHandler`
-with `meta` is enough for a route without validation.
+`readBody` returns the parsed body as it was sent, not the schema's output, so
+defaults and coercions declared in the schema are not applied to it. Start the
+server and open `/_scalar`, or fetch `/_openapi.json`. Path parameters are
+documented from the route pattern, so `defineValidatedHandler` with only `meta`
+is enough for a route without validation.
 
 ### Naming components
 
@@ -108,25 +125,25 @@ bun run openapi   # nitro build, boot the output, write openapi.json
 bun run sdk       # openapi-typescript openapi.json -o sdk.d.ts
 ```
 
-## Nitro v2 and Nuxt 4
+## Nitro v3
 
-The `v2` dist-tag targets `nitropack` 2.x and h3 1.x, which is what Nuxt 4
-ships. h3 1.x has no `defineValidatedHandler`, so that line provides one at
-`nitro-openapi-schemas/h3`. Install with `bun add nitro-openapi-schemas@v2`
-and read the [`nitro-v2` branch](https://github.com/oumarbarry/nitro-openapi-schemas/tree/nitro-v2) README.
+The `latest` dist-tag targets Nitro v3 and h3 v2, where `defineValidatedHandler`
+comes from `nitro/h3` itself. Install with `bun add nitro-openapi-schemas` and
+read the [`main` branch](https://github.com/oumarbarry/nitro-openapi-schemas) README.
 
 ## How it works
 
 The module emits a virtual module that imports every scanned route handler
-directly, bypassing Nitro's lazy wrappers, because h3's `defineValidatedHandler`
-and `defineHandler` assign the definition, `validate` schemas and `meta`
-included, onto the handler function. The spec route reads those live objects,
-converts each schema through `~standard.jsonSchema` (or wraps it with
-`@valibot/to-json-schema` when the library does not expose that yet), hoists
-named schemas and Zod's nested `$defs` into `components/schemas`, and caches
-the document after the first request.
+directly, bypassing Nitro's lazy wrappers. `defineValidatedHandler` from
+`nitro-openapi-schemas/h3` assigns the `validate` schemas and `meta` onto the
+handler function, the same contract h3 v2 provides natively, so the spec route
+can read those live objects, convert each schema through `~standard.jsonSchema`
+(or wrap it with `@valibot/to-json-schema` when the library does not expose
+that yet), hoist named schemas and Zod's nested `$defs` into
+`components/schemas`, and cache the document after the first request.
 
 The trade-off: routes imported by the spec route are no longer lazy-loaded.
+Nuxt's catch-all renderer (`/**`) is left out of the import for that reason.
 
 ## Limitations
 
@@ -153,10 +170,11 @@ works as a standalone module.
 
 ```sh
 bun install && bun install --force   # the second install links the built dist/ into the examples
-bun run dev       # example app at http://localhost:3000/_scalar
-bun run check     # oxlint + oxfmt
-bun run build     # obuild, writes dist/
-bun run openapi   # end-to-end: build the example and write its openapi.json
+bun run dev            # example app at http://localhost:3000/_scalar
+bun run check          # oxlint + oxfmt
+bun run build          # obuild, writes dist/
+bun run openapi        # end-to-end: build examples/nitro and write its openapi.json
+bun run openapi:nuxt4  # same for examples/nuxt4
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).

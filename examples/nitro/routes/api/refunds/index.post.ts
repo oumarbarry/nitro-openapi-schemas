@@ -1,4 +1,5 @@
-import { defineValidatedHandler } from "nitro/h3";
+import { readBody } from "h3";
+import { defineValidatedHandler } from "nitro-openapi-schemas/h3";
 import { z } from "zod";
 import { refundSchema } from "../../../shared/schema.ts";
 
@@ -22,7 +23,7 @@ export default defineValidatedHandler({
     },
   },
   handler: async (event) => {
-    const body = await event.req.json();
+    const body = await readBody(event);
     return { id: crypto.randomUUID(), amount: body.amount ?? 0, payment: null };
   },
 });

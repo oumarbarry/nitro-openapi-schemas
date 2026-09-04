@@ -3,15 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nitro dev",
-    "build": "nitro build",
-    "openapi": "nitro build && node scripts/emit-openapi.mjs",
+    "dev": "nitropack dev",
+    "build": "nitropack build",
+    "openapi": "nitropack build && node scripts/emit-openapi.mjs",
     "sdk": "npx -y openapi-typescript openapi.json -o sdk.d.ts"
   },
   "dependencies": {
-    "h3": "^2.0.1-rc.22",
-    "nitro": "^3.0.260610-beta",
+    "h3": "^1.15.0",
     "nitro-openapi-schemas": "file:../..",
+    "nitropack": "^2.12.0",
     "zod": "^4.0.0"
   }
 }

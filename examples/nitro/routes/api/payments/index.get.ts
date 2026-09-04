@@ -1,4 +1,4 @@
-import { defineValidatedHandler } from "nitro/h3";
+import { defineValidatedHandler } from "nitro-openapi-schemas/h3";
 import { z } from "zod";
 
 export default defineValidatedHandler({

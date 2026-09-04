@@ -2,8 +2,8 @@ import { defineBuildConfig } from "obuild/config";
 
 export default defineBuildConfig({
   entries: [
-    // Node-side Nitro module: bundle to dist/index.mjs (+ .d.mts).
-    { type: "bundle", input: ["./src/index.ts"] },
+    // Node-side Nitro module + the h3 v1 shim: bundle to dist/*.mjs (+ .d.mts).
+    { type: "bundle", input: ["./src/index.ts", "./src/h3.ts"] },
     // Runtime handlers are loaded by Nitro via file URL and transpiled in the
     // consumer build, so ship them as-is (keeps the `.ts` paths in index.ts +
     // route.ts valid). oxc just re-emits; no bundling. dts: false, the runtime is

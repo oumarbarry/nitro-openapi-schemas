@@ -12,3 +12,4 @@ types
 examples/*/.output
 examples/*/openapi.json
 examples/*/sdk.d.ts
+examples/*/.nuxt

@@ -1,7 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { join } from "node:path";
-import { runtimeDir } from "nitro/meta";
-import type { NitroModule } from "nitro/types";
+import { runtimeDir } from "nitropack/runtime/meta";
+import type { NitroModule } from "nitropack/types";
 
 export interface NitroOpenAPISchemasOptions {
   /** Route serving the generated spec. Default: `/_openapi.json` */
@@ -12,7 +12,7 @@ export interface NitroOpenAPISchemasOptions {
   info?: { title?: string; version?: string; description?: string };
 }
 
-declare module "nitro/types" {
+declare module "nitropack/types" {
   interface NitroConfig {
     openAPISchemas?: NitroOpenAPISchemasOptions;
   }
@@ -22,10 +22,13 @@ declare module "nitro/types" {
 }
 
 /**
+ * Nitro v2 / Nuxt 4 line.
+ *
  * Emits a virtual module that imports every scanned route handler *directly*
  * (bypassing lazy wrappers), so the spec route can read the live `validate`
- * schemas and `meta` that h3's defineValidatedHandler/defineHandler attach to
- * the handler function at runtime.
+ * schemas and `meta` attached to the handler function at runtime. h3 v1 has
+ * no defineValidatedHandler, so this package ships its own shim (see ./h3.ts)
+ * that attaches them.
  */
 // Explicit annotation (not `satisfies`) so obuild's isolatedDeclarations emits
 // the nominal NitroModule type for the default export instead of warning (TS9037).
@@ -36,15 +39,17 @@ const nitroOpenAPISchemas: NitroModule = {
     const specRoute = options.route || "/_openapi.json";
 
     nitro.options.virtual["#nitro-openapi-schemas"] = () => {
-      const entries = Object.values(nitro.routing.routes.routes)
-        .flatMap((r) => r.data)
-        .filter(
-          (h) =>
-            h.route &&
-            h.route !== specRoute &&
-            !h.route.startsWith("/_") &&
-            typeof h.handler === "string",
-        );
+      // scannedHandlers = nitro's own routes/ + api/ scan; options.handlers =
+      // everything registered programmatically (this is how Nuxt injects server/)
+      const entries = [...nitro.scannedHandlers, ...nitro.options.handlers].filter(
+        (h) =>
+          h.route &&
+          !h.middleware &&
+          h.route !== specRoute &&
+          !h.route.startsWith("/_") &&
+          !h.route.includes("**") && // Nuxt's "/**" app renderer, importing it eagerly is not an option
+          typeof h.handler === "string",
+      );
       const files = [...new Set(entries.map((h) => h.handler as string))];
       return [
         ...files.map((file, i) => `import h${i} from ${JSON.stringify(file)};`),

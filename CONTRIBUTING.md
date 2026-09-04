@@ -22,7 +22,7 @@ CI runs these on every push and pull request, so run them locally first:
 bun run check          # oxlint + oxfmt --check
 bun run build          # obuild, must be warning-free
 bun run openapi        # builds examples/nitro and writes its openapi.json
-bun run openapi:nuxt4  # nitro-v2 branch only
+bun run openapi:nuxt4  # same for examples/nuxt4
 ```
 
 ## Guidelines
