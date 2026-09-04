@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/). The package major follows the Nitro
 major: 3.x targets Nitro v3 (`latest` dist-tag), 2.x targets Nitro v2 and
-Nuxt 4 (`v2` dist-tag).
+Nuxt 4 (`nitro-v2` dist-tag).
 
 ## [Unreleased]
 

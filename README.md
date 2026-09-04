@@ -110,9 +110,9 @@ bun run sdk       # openapi-typescript openapi.json -o sdk.d.ts
 
 ## Nitro v2 and Nuxt 4
 
-The `v2` dist-tag targets `nitropack` 2.x and h3 1.x, which is what Nuxt 4
+The `nitro-v2` dist-tag targets `nitropack` 2.x and h3 1.x, which is what Nuxt 4
 ships. h3 1.x has no `defineValidatedHandler`, so that line provides one at
-`nitro-openapi-schemas/h3`. Install with `bun add nitro-openapi-schemas@v2`
+`nitro-openapi-schemas/h3`. Install with `bun add nitro-openapi-schemas@nitro-v2`
 and read the [`nitro-v2` branch](https://github.com/oumarbarry/nitro-openapi-schemas/tree/nitro-v2) README.
 
 ## How it works
