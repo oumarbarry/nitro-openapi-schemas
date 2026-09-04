@@ -1,7 +1,7 @@
 # nitro-openapi-schemas
 
 [![CI](https://github.com/oumarbarry/nitro-openapi-schemas/actions/workflows/ci.yml/badge.svg?branch=nitro-v2)](https://github.com/oumarbarry/nitro-openapi-schemas/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/nitro-openapi-schemas/v2?color=yellow)](https://npmjs.com/package/nitro-openapi-schemas/v/v2)
+[![npm version](https://img.shields.io/npm/v/nitro-openapi-schemas/nitro-v2?color=yellow)](https://npmjs.com/package/nitro-openapi-schemas/v/nitro-v2)
 [![license](https://img.shields.io/npm/l/nitro-openapi-schemas?color=yellow)](https://github.com/oumarbarry/nitro-openapi-schemas/blob/main/LICENSE)
 
 Schema-driven OpenAPI for [Nitro](https://nitro.build). The Zod, Valibot or
@@ -18,7 +18,7 @@ Zod / Valibot / ArkType schema
 ```
 
 - This is the Nitro v2 and Nuxt 4 line: `nitropack` 2.x and h3 1.x, published
-  as 2.x under the `v2` dist-tag from the `nitro-v2` branch. Nitro v3 users
+  as 2.x under the `nitro-v2` dist-tag from the branch of the same name. Nitro v3 users
   want the [`main` branch](https://github.com/oumarbarry/nitro-openapi-schemas/tree/main) and the `latest` tag.
 - Zod 4.2+, ArkType 2.1.28+, and Valibot through `@valibot/to-json-schema`
   1.5+, via [Standard JSON Schema](https://github.com/standard-schema/standard-schema/pull/134).
@@ -29,7 +29,7 @@ Zod / Valibot / ArkType schema
 ## Install
 
 ```sh
-bun add nitro-openapi-schemas@v2   # or npm, pnpm
+bun add nitro-openapi-schemas@nitro-v2   # or npm, pnpm
 ```
 
 ## Usage
