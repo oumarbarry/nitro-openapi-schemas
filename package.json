@@ -1,6 +1,6 @@
 {
   "name": "nitro-openapi-schemas",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Schema-driven OpenAPI for Nitro: the Zod, Valibot or ArkType schema that validates a route also documents it",
   "keywords": [
     "api",

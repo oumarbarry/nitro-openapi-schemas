@@ -8,6 +8,13 @@ Nuxt 4 (`nitro-v2` dist-tag).
 
 ## [Unreleased]
 
+## [3.0.1] - 2026-09-04
+
+### Fixed
+
+- The README shipped in 3.0.0 pointed at a `v2` dist-tag that does not exist.
+  The Nitro v2 and Nuxt 4 line is published under `nitro-v2`. No code changes.
+
 ## [3.0.0] - 2026-09-04
 
 First release of the Nitro v3 line.
@@ -27,5 +34,6 @@ First release of the Nitro v3 line.
 - Example Nitro app with a script that boots the built server and writes
   `openapi.json` for SDK generation.
 
-[Unreleased]: https://github.com/oumarbarry/nitro-openapi-schemas/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/oumarbarry/nitro-openapi-schemas/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/oumarbarry/nitro-openapi-schemas/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/oumarbarry/nitro-openapi-schemas/releases/tag/v3.0.0
