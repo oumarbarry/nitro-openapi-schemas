@@ -14,6 +14,10 @@ Nuxt 4 (`nitro-v2` dist-tag).
   `components/schemas` as a `$ref` to itself, so its fields were lost, and
   request bodies got an extra `<Name>Input` alias. Zod 4.6 now emits a named
   schema as a `$ref` into its own `$defs`, the generator unwraps it.
+- `nitro dev` could not start its dev worker: the module's runtime route was
+  left external, where the `#nitro-openapi-schemas` virtual module does not
+  resolve. The module now asks Nitro to bundle its runtime files and the
+  Scalar route. Production builds were not affected.
 
 ## [3.0.1] - 2026-09-04
 

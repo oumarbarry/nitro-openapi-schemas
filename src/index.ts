@@ -60,6 +60,18 @@ const nitroOpenAPISchemas: NitroModule = {
       ].join("\n");
     };
 
+    // Bundle runtime/ instead of leaving it external: in dev, an external
+    // route.mjs cannot resolve the #nitro-openapi-schemas virtual module and
+    // the dev worker fails to start. Same for the Scalar route when this
+    // package resolves another nitro copy than the app (pnpm, bun isolated installs).
+    if (nitro.options.noExternals !== true) {
+      nitro.options.noExternals = [
+        ...(nitro.options.noExternals || []),
+        fileURLToPath(new URL("runtime", import.meta.url)),
+        runtimeDir,
+      ];
+    }
+
     nitro.options.handlers.push({
       route: specRoute,
       // extensionless: resolves to runtime/route.ts in dev, runtime/route.mjs when built
