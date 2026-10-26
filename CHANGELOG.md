@@ -8,6 +8,13 @@ Nuxt 4 (`nitro-v2` dist-tag).
 
 ## [Unreleased]
 
+### Fixed
+
+- With Zod 4.6+, every named schema (`.meta({ id })`) ended up in
+  `components/schemas` as a `$ref` to itself, so its fields were lost, and
+  request bodies got an extra `<Name>Input` alias. Zod 4.6 now emits a named
+  schema as a `$ref` into its own `$defs`, the generator unwraps it.
+
 ## [3.0.1] - 2026-09-04
 
 ### Fixed

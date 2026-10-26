@@ -114,7 +114,13 @@ class SchemaRegistry {
     const cached = seen.get(schema);
     if (cached) return cached;
 
-    const { json, name } = await convert(schema, io);
+    let { json, name } = await convert(schema, io);
+    // zod 4.6+ emits a named root schema as `{ $ref: "#/$defs/<id>", $defs }`:
+    // unwrap it, otherwise the component below would be a $ref to itself
+    if (name && json.$ref === `#/$defs/${name}` && json.$defs?.[name]) {
+      const { [name]: root, ...defs } = json.$defs;
+      json = Object.keys(defs).length > 0 ? { ...root, $defs: defs } : root;
+    }
     // zod lifts nested registered schemas into $defs (keyed by registry id):
     // hoist them into components and rewrite refs to OpenAPI pointers
     if (json.$defs) {
