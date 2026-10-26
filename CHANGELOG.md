@@ -8,6 +8,20 @@ Nuxt 4 (`nitro-v2` dist-tag).
 
 ## [Unreleased]
 
+### Fixed
+
+- `nitro dev` and `nuxt dev` answered 500 on every route: Nitro's dev bundle
+  rewrote the import of `runtime/generator.mjs` to a path that does not exist.
+  The module now asks Nitro to bundle its runtime files and the Scalar route.
+  Production builds were not affected.
+
+### Changed
+
+- Tested against Nuxt 4.6 (`nitropack` 2.13.5, h3 1.15.11), including the
+  `future.compatibilityVersion: 5` flags. Routes written with the new
+  `nuxt/server` helpers are listed in the document without schemas, use
+  `defineValidatedHandler` for the routes you want documented.
+
 ## [2.0.0] - 2026-09-04
 
 First release of the Nitro v2 and Nuxt 4 line (`nitropack` 2.x, h3 1.x).

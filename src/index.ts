@@ -65,6 +65,16 @@ const nitroOpenAPISchemas: NitroModule = {
       ].join("\n");
     };
 
+    // Bundle runtime/ instead of leaving it external: in dev, Nitro rewrites
+    // route.mjs's relative import of generator.mjs to a broken path. Same for
+    // the Scalar route when this package resolves another nitropack copy than
+    // the app (pnpm, bun isolated installs).
+    // externals is typed as required but is undefined in a plain Nitro build.
+    ((nitro.options.externals ||= {}).inline ||= []).push(
+      fileURLToPath(new URL("runtime", import.meta.url)),
+      runtimeDir,
+    );
+
     nitro.options.handlers.push({
       route: specRoute,
       // extensionless: resolves to runtime/route.ts in dev, runtime/route.mjs when built
