@@ -10,6 +10,10 @@ Nuxt 4 (`nitro-v2` dist-tag).
 
 ### Fixed
 
+- With Zod 4.6+, every named schema (`.meta({ id })`) ended up in
+  `components/schemas` as a `$ref` to itself, so its fields were lost, and
+  request bodies got an extra `<Name>Input` alias. Zod 4.6 now emits a named
+  schema as a `$ref` into its own `$defs`, the generator unwraps it.
 - `nitro dev` and `nuxt dev` answered 500 on every route: Nitro's dev bundle
   rewrote the import of `runtime/generator.mjs` to a path that does not exist.
   The module now asks Nitro to bundle its runtime files and the Scalar route.
