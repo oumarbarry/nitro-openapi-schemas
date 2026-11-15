@@ -18,6 +18,11 @@ Nuxt 4 (`nitro-v2` dist-tag).
   left external, where the `#nitro-openapi-schemas` virtual module does not
   resolve. The module now asks Nitro to bundle its runtime files and the
   Scalar route. Production builds were not affected.
+- npm refused to install the package next to any Nitro release after
+  `3.0.260610-beta` (`ERESOLVE`): Nitro puts the date in the patch number, so
+  `^3.0.260610-beta` matched none of the later betas and release candidates.
+  The `nitro` peer dependency is now `*`, the only range npm matches against
+  every Nitro v3 prerelease. Tested against `3.0.261103-rc`.
 
 ## [3.0.1] - 2026-09-04
 
