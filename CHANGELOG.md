@@ -8,6 +8,8 @@ Nuxt 4 (`nitro-v2` dist-tag).
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-11-15
+
 ### Fixed
 
 - With Zod 4.6+, every named schema (`.meta({ id })`) ended up in
@@ -49,5 +51,6 @@ First release of the Nitro v2 and Nuxt 4 line (`nitropack` 2.x, h3 1.x).
 - Example Nitro app and example Nuxt 4 app, each with a script that boots the
   built server and writes `openapi.json` for SDK generation.
 
-[Unreleased]: https://github.com/oumarbarry/nitro-openapi-schemas/compare/v2.0.0...nitro-v2
+[Unreleased]: https://github.com/oumarbarry/nitro-openapi-schemas/compare/v2.0.1...nitro-v2
+[2.0.1]: https://github.com/oumarbarry/nitro-openapi-schemas/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/oumarbarry/nitro-openapi-schemas/releases/tag/v2.0.0
