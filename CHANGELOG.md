@@ -21,7 +21,7 @@ Nuxt 4 (`nitro-v2` dist-tag).
 
 ### Changed
 
-- Tested against Nuxt 4.6 (`nitropack` 2.13.5, h3 1.15.11), including the
+- Tested against Nuxt 4.6.4 (`nitropack` 2.13.6, h3 1.15.11), including the
   `future.compatibilityVersion: 5` flags. Routes written with the new
   `nuxt/server` helpers are listed in the document without schemas, use
   `defineValidatedHandler` for the routes you want documented.
